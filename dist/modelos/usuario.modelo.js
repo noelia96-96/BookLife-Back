@@ -9,9 +9,10 @@ const mongoose_2 = __importDefault(require("mongoose"));
 //esquema - estructura de la tabla
 const usuarioSchema = new mongoose_1.Schema({
     nombre: { type: String, unique: true },
-    email: { type: String, unique: true },
     pwd: { type: String },
-    edad: { type: Number }
+    email: { type: String, unique: true },
+    ciudad: { type: String },
+    sexo: { type: String }
 }, {
     timestamps: true
 });
