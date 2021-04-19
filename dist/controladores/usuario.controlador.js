@@ -83,7 +83,10 @@ class usuarioController {
         const pwdQueLlega = params.pwd;
         //buscar los usuarios que cumplan estas dos condiciones
         //con una promesa, si lo encuentra devuelve un usuario con unos datos concretos (no todos)
+        console.log(nombreQueLlega);
+        console.log(pwdQueLlega);
         usuario_modelo_1.Usuario.findOne({ nombre: nombreQueLlega, pwd: pwdQueLlega }).then((usuarioDB) => {
+            console.log(usuarioDB);
             if (!usuarioDB) {
                 return res.status(200).send({
                     status: 'error',
@@ -94,6 +97,8 @@ class usuarioController {
             usuarioQueDevuelvo.nombre = usuarioDB.nombre;
             usuarioQueDevuelvo._id = usuarioDB._id;
             //usuarioQueDevuelvo.email = usuarioDB.email;//
+            console.log(usuarioQueDevuelvo);
+            console.log(res);
             res.status(200).send({
                 status: 'ok',
                 menesaj: 'Login correcto',
