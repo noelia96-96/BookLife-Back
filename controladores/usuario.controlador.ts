@@ -33,9 +33,10 @@ registro(req:Request, res:Response){
    let params = req.body;
    const usuarioNuevo= new Usuario();
    usuarioNuevo.nombre = params.nombre;
-   usuarioNuevo.email = params.email;
    usuarioNuevo.pwd = params.pwd;
-   usuarioNuevo.edad = params.edad;
+   usuarioNuevo.email = params.email;
+   usuarioNuevo.ciudad = params.ciudad;
+   usuarioNuevo.sexo = params.sexo;
    
    Usuario.create(usuarioNuevo).then((usuarioDB)=>{
        if(!usuarioDB){

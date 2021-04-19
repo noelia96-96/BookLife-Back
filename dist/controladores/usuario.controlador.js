@@ -32,9 +32,10 @@ class usuarioController {
         let params = req.body;
         const usuarioNuevo = new usuario_modelo_1.Usuario();
         usuarioNuevo.nombre = params.nombre;
-        usuarioNuevo.email = params.email;
         usuarioNuevo.pwd = params.pwd;
-        usuarioNuevo.edad = params.edad;
+        usuarioNuevo.email = params.email;
+        usuarioNuevo.ciudad = params.ciudad;
+        usuarioNuevo.sexo = params.sexo;
         usuario_modelo_1.Usuario.create(usuarioNuevo).then((usuarioDB) => {
             if (!usuarioDB) {
                 res.status(500).send({

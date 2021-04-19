@@ -26,7 +26,7 @@ server.app.use('/usuario', usuario_ruta_1.default);
 server.app.use('/evento', evento_ruta_1.default);
 //conectamos la bbdd
 //mongoose.connect(ruta, opciones, callback para ver si hay error)
-mongoose_1.default.connect('mongodb://localhost:27017/hlc2021', {
+mongoose_1.default.connect('mongodb://localhost:27017/booklife', {
     useCreateIndex: true,
     useUnifiedTopology: true,
     useNewUrlParser: true
