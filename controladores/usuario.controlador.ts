@@ -55,9 +55,41 @@ registro(req:Request, res:Response){
            status: 'error',
            error: err
        })
-
    });
 }
+registroLibreria(req:Request, res:Response){
+    // Usuario
+    let params = req.body;
+    const usuarioNuevo= new Usuario();
+    usuarioNuevo.nombre = params.nombre;
+    usuarioNuevo.ciudad = params.ciudad;
+    usuarioNuevo.direccion = params.direccion;
+    usuarioNuevo.telefono = params.telefono;
+    usuarioNuevo.web = params.web;
+    usuarioNuevo.email = params.email;
+    usuarioNuevo.pwd = params.pwd;
+   
+    usuarioNuevo.sexo = params.sexo;
+    
+    Usuario.create(usuarioNuevo).then((usuarioDB)=>{
+        if(!usuarioDB){
+            res.status(500).send({
+                status:'error',
+                mensaje:'error al crear el usuario'
+            })
+        }
+        res.status(200).send({
+            status:'ok',
+            mensaje:'se ha creado el usuario' + usuarioDB.nombre,
+            usuario: usuarioDB
+        })
+    }).catch(err=>{
+        res.status(500).send({
+            status: 'error',
+            error: err
+        })
+    });
+ }
 getUsuario(req:Request, res:Response){
     let _id = req.body.usuario._id;
     Usuario.findById(_id).then((usuarioDB)=>{
@@ -98,7 +130,8 @@ login(req:Request, res:Response){
         const usuarioQueDevuelvo = new Usuario();
         usuarioQueDevuelvo.nombre = usuarioDB.nombre;
         usuarioQueDevuelvo._id = usuarioDB._id;
-        //usuarioQueDevuelvo.email = usuarioDB.email;//
+        usuarioQueDevuelvo.web = usuarioDB.web;
+        usuarioQueDevuelvo.sexo = usuarioDB.sexo;
 
         res.status(200).send({
             status:'ok',
