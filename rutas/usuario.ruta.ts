@@ -13,4 +13,6 @@ usuarioRutas.post('/login', usuarioController.prototype.login);
 usuarioRutas.get('/getUsuario',autenticacion, usuarioController.prototype.getUsuario);
 
 
+
+
 export default usuarioRutas;

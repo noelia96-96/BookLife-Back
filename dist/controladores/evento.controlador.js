@@ -7,7 +7,7 @@ const token_1 = __importDefault(require("../clases/token"));
 const evento_modelo_1 = require("../modelos/evento.modelo");
 const usuario_modelo_1 = require("../modelos/usuario.modelo");
 class eventoController {
-    registro(req, res) {
+    registrar(req, res) {
         let _id = req.body.usuario._id;
         usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
             if (!usuarioDB) {
@@ -24,7 +24,11 @@ class eventoController {
                 eventoNuevo.nombreEvento = params.nombreEvento;
                 //el creador se recupera de la BBDD directamente a la hora de hacer el registro
                 eventoNuevo.creador = usuario;
+                eventoNuevo.lugar = params.lugar;
                 eventoNuevo.fecha = params.fecha;
+                eventoNuevo.hora = params.hora;
+                console.log(params);
+                //eventoNuevo.minutos = params.minutos;
                 eventoNuevo.participantes = params.participantes;
                 evento_modelo_1.Evento.create(eventoNuevo).then((eventoDB) => {
                     if (!eventoDB) {

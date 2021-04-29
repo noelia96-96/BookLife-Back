@@ -149,6 +149,7 @@ login(req:Request, res:Response){
     })  
  }
 
+
 };
 
 export default usuarioController;

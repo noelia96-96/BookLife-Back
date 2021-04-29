@@ -4,7 +4,7 @@ import { Evento } from '../modelos/evento.modelo';
 import { Usuario } from '../modelos/usuario.modelo';
 
 class eventoController{
-    registro(req:Request, res:Response){
+    registrar(req:Request, res:Response){
         let _id = req.body.usuario._id;
         Usuario.findById(_id).then((usuarioDB)=>{ 
             if(!usuarioDB){
@@ -20,8 +20,13 @@ class eventoController{
             eventoNuevo.nombreEvento = params.nombreEvento;
             //el creador se recupera de la BBDD directamente a la hora de hacer el registro
             eventoNuevo.creador = usuario;
+            eventoNuevo.lugar = params.lugar;
             eventoNuevo.fecha = params.fecha;
+            eventoNuevo.hora = params.hora;
+            console.log(params)
+            //eventoNuevo.minutos = params.minutos;
             eventoNuevo.participantes = params.participantes;
+
             Evento.create(eventoNuevo).then((eventoDB)=>{
                 if(!eventoDB){
                     res.status(500).send({
@@ -41,10 +46,10 @@ class eventoController{
                     error: err
                 })
             });
-    }
+        }
     })
 
-     }
+    }
      //Cargar eventos propios
      getEvento(req: Request, res:Response){
         let _id = req.body.usuario._id;
@@ -71,12 +76,11 @@ class eventoController{
                     mensaje: 'Muestra de datos correcta',
                     evento: eventosQueDevuelvo,
                     token: Token.generaToken(eventosQueDevuelvo)
-                    });
+                });
             });
-            }
-    
+        }
     })
-    }
+}
     //cargar eventos ajenos
     getEventoAjenos(req: Request, res:Response){
         let _id = req.body.usuario._id;
