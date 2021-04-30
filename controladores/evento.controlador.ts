@@ -81,40 +81,6 @@ class eventoController{
         }
     })
 }
-    //cargar eventos ajenos
-    getEventoAjenos(req: Request, res:Response){
-        let _id = req.body.usuario._id;
-        let params = req.body;
-        Usuario.findById(_id).then((usuarioDB)=>{ 
-            if(!usuarioDB){
-                return res.status(200).send({
-                    status:'error',
-                    mensaje: 'Token inválido'
-                })
-            }else{            
-                let usuario = usuarioDB.nombre;
-                // //$ne buscar por los eventos que no ha creado
-                Evento.find({ creador: { $ne: usuario } }).sort('fecha').limit(params.limite).then((eventosDB)=>{
-                    if(!eventosDB){
-                        return res.status(200).send({
-                        status:'error',
-                        mensaje: 'eventos incorrectos'
-                        })
-                    }
-                    const eventosQueDevuelvo = new Array<any>();
-                    eventosQueDevuelvo.push(eventosDB);
-                    res.status(200).send({
-                    status:'ok',
-                    mensaje: 'Muestra de datos correcta',
-                    evento: eventosQueDevuelvo,
-                    token: Token.generaToken(eventosQueDevuelvo)
-                    });
-            });
-            }
-    
-    })
-    }
-
      borrarEvento(req: Request, res:Response){
         let params = req.body;
         Evento.findByIdAndRemove(params._id).then((eventoDB)=>{

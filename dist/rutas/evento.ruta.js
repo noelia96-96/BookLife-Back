@@ -9,7 +9,6 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const eventoRutas = express_1.Router();
 eventoRutas.post('/registrar', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.registrar);
 eventoRutas.post('/mostrarEvento', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.getEvento);
-eventoRutas.post('/mostrarEventoAjenos', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.getEventoAjenos);
 eventoRutas.post('/borrarEvento', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.borrarEvento);
 eventoRutas.post('/apuntarse', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.apuntarse);
 eventoRutas.post('/desapuntarse', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.desapuntarse);
