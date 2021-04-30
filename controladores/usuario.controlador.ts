@@ -42,12 +42,12 @@ registro(req:Request, res:Response){
        if(!usuarioDB){
            res.status(500).send({
                status:'error',
-               mensaje:'error al crear el usuario'
+               mensaje:'Error al crear el usuario'
            })
        }
        res.status(200).send({
            status:'ok',
-           mensaje:'se ha creado el usuario' + usuarioDB.nombre,
+           mensaje:'Se ha creado el usuario' + usuarioDB.nombre,
            usuario: usuarioDB
        })
    }).catch(err=>{
@@ -75,12 +75,12 @@ registroLibreria(req:Request, res:Response){
         if(!usuarioDB){
             res.status(500).send({
                 status:'error',
-                mensaje:'error al crear el usuario'
+                mensaje:'Error al crear el usuario'
             })
         }
         res.status(200).send({
             status:'ok',
-            mensaje:'se ha creado el usuario' + usuarioDB.nombre,
+            mensaje:'Se ha creado el usuario' + usuarioDB.nombre,
             usuario: usuarioDB
         })
     }).catch(err=>{

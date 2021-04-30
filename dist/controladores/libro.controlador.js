@@ -4,10 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const token_1 = __importDefault(require("../clases/token"));
-const evento_modelo_1 = require("../modelos/evento.modelo");
+const libro_modelo_1 = require("../modelos/libro.modelo");
 const usuario_modelo_1 = require("../modelos/usuario.modelo");
-class eventoController {
-    registrar(req, res) {
+class libroController {
+    registrarLibro(req, res) {
+        console.log(req);
         let _id = req.body.usuario._id;
         usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
             if (!usuarioDB) {
@@ -18,27 +19,28 @@ class eventoController {
             }
             else {
                 let usuario = usuarioDB.nombre;
-                // Evento
+                // Libros
                 let params = req.body;
-                const eventoNuevo = new evento_modelo_1.Evento();
-                eventoNuevo.nombreEvento = params.nombreEvento;
+                const libroNuevo = new libro_modelo_1.Libro();
+                libroNuevo.nombreLibro = params.nombreLibro;
                 //el creador se recupera de la BBDD directamente a la hora de hacer el registro
-                eventoNuevo.creador = usuario;
-                eventoNuevo.lugar = params.lugar;
-                eventoNuevo.fecha = params.fecha;
-                eventoNuevo.hora = params.hora;
-                eventoNuevo.participantes = params.participantes;
-                evento_modelo_1.Evento.create(eventoNuevo).then((eventoDB) => {
-                    if (!eventoDB) {
+                libroNuevo.creador = usuario;
+                libroNuevo.genero = params.genero;
+                libroNuevo.autor = params.autor;
+                libroNuevo.precio = params.precio;
+                libroNuevo.participantes = params.participantes;
+                console.log(params);
+                libro_modelo_1.Libro.create(libroNuevo).then((libroDB) => {
+                    if (!libroDB) {
                         res.status(500).send({
                             status: 'error',
-                            mensaje: 'Error al crear el evento'
+                            mensaje: 'Error al publicar el libro'
                         });
                     }
                     res.status(200).send({
                         status: 'ok',
-                        mensaje: 'Se ha creado el evento' + eventoDB.nombreEvento,
-                        evento: eventoDB
+                        mensaje: 'Se ha publicado el libro' + libroDB.nombreLibro,
+                        libro: libroDB
                     });
                 }).catch(err => {
                     console.log(err);
@@ -50,8 +52,8 @@ class eventoController {
             }
         });
     }
-    //Cargar eventos propios
-    getEvento(req, res) {
+    //Cargar libros propios
+    getLibros(req, res) {
         let _id = req.body.usuario._id;
         let params = req.body;
         usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
@@ -63,38 +65,38 @@ class eventoController {
             }
             else {
                 let usuario = usuarioDB.nombre;
-                evento_modelo_1.Evento.find({ creador: usuario }).sort('fecha').limit(params.limite).then((eventosDB) => {
-                    if (!eventosDB) {
+                libro_modelo_1.Libro.find({ creador: usuario }).sort('nombreLibro').limit(params.limite).then((librosDB) => {
+                    if (!librosDB) {
                         return res.status(200).send({
                             status: 'error',
-                            mensaje: 'Eventos incorrectos'
+                            mensaje: 'Libros incorrectos'
                         });
                     }
-                    const eventosQueDevuelvo = new Array();
-                    eventosQueDevuelvo.push(eventosDB);
+                    const librosQueDevuelvo = new Array();
+                    librosQueDevuelvo.push(librosDB);
                     res.status(200).send({
                         status: 'ok',
                         mensaje: 'Muestra de datos correcta',
-                        evento: eventosQueDevuelvo,
-                        token: token_1.default.generaToken(eventosQueDevuelvo)
+                        libro: librosQueDevuelvo,
+                        token: token_1.default.generaToken(librosQueDevuelvo)
                     });
                 });
             }
         });
     }
-    borrarEvento(req, res) {
+    borrar(req, res) {
         let params = req.body;
-        evento_modelo_1.Evento.findByIdAndRemove(params._id).then((eventoDB) => {
-            if (!eventoDB) {
+        libro_modelo_1.Libro.findByIdAndRemove(params._id).then((libroDB) => {
+            if (!libroDB) {
                 res.status(500).send({
                     status: 'error',
-                    mensaje: 'Error al borrar el evento'
+                    mensaje: 'Error al borrar el libro'
                 });
             }
             res.status(200).send({
                 status: 'ok',
-                mensaje: 'Se ha borrado el evento',
-                evento: eventoDB
+                mensaje: 'Se ha borrado el libro',
+                libro: libroDB
             });
         }).catch(err => {
             res.status(500).send({
@@ -117,26 +119,26 @@ class eventoController {
                 //CODIGO AQUI
                 let params = req.body;
                 const idQueLlega = params._id;
-                evento_modelo_1.Evento.findOne({ _id: params._id }).then(eventDB => {
-                    if (!eventDB) {
+                libro_modelo_1.Libro.findOne({ _id: params._id }).then(libroDB => {
+                    if (!libroDB) {
                         return res.status(400).send({
                             status: 'error',
-                            mensaje: 'El evento no existe',
+                            mensaje: 'El libro no existe',
                         });
                     }
-                    if (eventDB.participantes.length === 4) {
+                    if (libroDB.participantes.length === 4) {
                         return res.status(200).send({
                             status: 'error',
-                            mensaje: 'El evento está completo',
+                            mensaje: 'El libro ya ha sido reservado',
                         });
                     }
                     else {
-                        eventDB.participantes.push(usuario);
+                        libroDB.participantes.push(usuario);
                     }
-                    eventDB.save().then(() => {
+                    libroDB.save().then(() => {
                         res.status(200).send({
                             status: 'ok',
-                            mensaje: 'Evento actualizado'
+                            mensaje: 'Libro actualizado'
                         });
                     }).catch(err => {
                         res.status(500).send({
@@ -148,7 +150,7 @@ class eventoController {
             }
         });
     }
-    desapuntarse(req, res) {
+    quitarReserva(req, res) {
         let _id = req.body.usuario._id;
         usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
             if (!usuarioDB) {
@@ -162,70 +164,70 @@ class eventoController {
                 //CODIGO AQUI
                 let params = req.body;
                 const idQueLlega = params._id;
-                evento_modelo_1.Evento.findOne({ _id: params._id }).then(eventDB => {
-                    if (!eventDB) {
+                libro_modelo_1.Libro.findOne({ _id: params._id }).then(libroDB => {
+                    if (!libroDB) {
                         return res.status(400).send({
                             status: 'error',
-                            mensaje: 'Error al borrar el evento',
+                            mensaje: 'Error al borrar el libro',
                         });
                     }
-                    var indice = eventDB.participantes.indexOf(usuario);
-                    eventDB.participantes.splice(indice, 1);
-                    eventDB.save().then(() => {
+                    var indice = libroDB.participantes.indexOf(usuario);
+                    libroDB.participantes.splice(indice, 1);
+                    libroDB.save().then(() => {
                         res.status(200).send({
                             status: 'ok',
-                            mensaje: 'Evento actualizado'
+                            mensaje: 'Libro actualizado'
                         });
                     });
                 });
             }
         });
     }
-    //Recupera el evento para editarlo
-    buscarEvento(req, res) {
+    //Recupera el libro para editarlo
+    buscarLibro(req, res) {
         let params = req.body;
         const idQueLlega = params._id;
-        evento_modelo_1.Evento.findById(idQueLlega).then((eventosDB) => {
-            if (!eventosDB) {
+        libro_modelo_1.Libro.findById(idQueLlega).then((librosDB) => {
+            if (!librosDB) {
                 return res.status(200).send({
                     status: 'error',
                     mensaje: 'Búsqueda fallida'
                 });
             }
-            const eventosQueDevuelvo = new Array();
-            eventosQueDevuelvo.push(eventosDB);
+            const librosQueDevuelvo = new Array();
+            librosQueDevuelvo.push(librosDB);
             res.status(200).send({
                 status: 'ok',
-                mensaje: 'Búsqueda de eventos exitosa',
-                evento: eventosQueDevuelvo,
-                token: token_1.default.generaToken(eventosQueDevuelvo)
+                mensaje: 'Búsqueda de libros exitosa',
+                libro: librosQueDevuelvo,
+                token: token_1.default.generaToken(librosQueDevuelvo)
             });
         });
     }
-    //Guardar evento editado
-    guardar(req, res) {
+    //Guardar libro editado
+    guardarDatosEditados(req, res) {
         let params = req.body;
         const idQueLlega = params._id;
-        evento_modelo_1.Evento.findById(idQueLlega).then(eventDB => {
-            if (!eventDB) {
+        libro_modelo_1.Libro.findById(idQueLlega).then(libroDB => {
+            if (!libroDB) {
                 return res.status(400).send({
                     status: 'error',
-                    mensaje: 'Error al editar el evento',
+                    mensaje: 'Error al editar el libro',
                 });
             }
-            if (eventDB.nombreEvento !== params.nombreEvento || eventDB.lugar !== params.lugar || eventDB.fecha !== params.fecha || eventDB.hora !== params.hora) {
-                eventDB.nombreEvento = params.nombreEvento;
-                eventDB.lugar = params.lugar;
-                eventDB.fecha = params.fecha;
-                eventDB.hora = params.hora;
+            if (libroDB.nombreLibro !== params.nombreLibro || libroDB.genero !== params.genero || libroDB.autor !== params.autor || libroDB.precio !== params.precio) {
+                libroDB.nombreLibro = params.nombreLibro;
+                libroDB.genero = params.genero;
+                libroDB.autor = params.autor;
+                libroDB.precio = params.precio;
             }
-            eventDB.save().then(() => {
+            libroDB.save().then(() => {
                 res.status(200).send({
                     status: 'ok',
-                    mensaje: 'Evento editado'
+                    mensaje: 'Libro editado'
                 });
             });
         });
     }
 }
-exports.default = eventoController;
+exports.default = libroController;

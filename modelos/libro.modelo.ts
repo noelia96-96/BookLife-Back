@@ -2,25 +2,25 @@ import { Schema, Document } from "mongoose";
 import mongoose from 'mongoose';
 
 //esquema - estructura de la tabla
-const eventoSchema = new Schema({
-    nombreEvento:{type:String, unique:true},
+const libroSchema = new Schema({
     creador:{type:String},
-    lugar:{type:String},
-    fecha:{type:Date},
-    hora:{type:Date},
+    nombreLibro:{type:String, unique:true},
+    genero:{type:String},
+    autor:{type:String},
+    precio:{type:String},
     participantes:[{type:String}]
 },{
     timestamps:true
 });
 
-interface IEvento extends Document{
-    nombreEvento:string,
+interface ILibro extends Document{
     creador:string,
-    lugar: string,
-    fecha:Date,
-    hora: Date,
+    nombreLibro:string,
+    genero: string,
+    autor: string,
+    precio: string,
     participantes:string[]
 }
 
 //modelo de mongoose - que trabaja sobre la tabla Usuario con esquema usuarioSchema
-export const Evento = mongoose.model<IEvento>('Evento', eventoSchema);
+export const Libro = mongoose.model<ILibro>('Libro', libroSchema);

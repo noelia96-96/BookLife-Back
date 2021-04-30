@@ -14,6 +14,7 @@ class eventoController{
                 })
             }else{            
             let usuario = usuarioDB.nombre;
+
             // Evento
             let params = req.body;
             const eventoNuevo= new Evento();
@@ -23,20 +24,18 @@ class eventoController{
             eventoNuevo.lugar = params.lugar;
             eventoNuevo.fecha = params.fecha;
             eventoNuevo.hora = params.hora;
-            console.log(params)
-            //eventoNuevo.minutos = params.minutos;
             eventoNuevo.participantes = params.participantes;
 
             Evento.create(eventoNuevo).then((eventoDB)=>{
                 if(!eventoDB){
                     res.status(500).send({
                         status:'error',
-                        mensaje:'error al crear el evento'
+                        mensaje:'Error al crear el evento'
                     })
                 }
                 res.status(200).send({
                     status:'ok',
-                    mensaje:'se ha creado el evento' + eventoDB.nombreEvento,
+                    mensaje:'Se ha creado el evento' + eventoDB.nombreEvento,
                     evento: eventoDB
                 })
             }).catch(err=>{
@@ -66,9 +65,9 @@ class eventoController{
                     if(!eventosDB){
                         return res.status(200).send({
                         status:'error',
-                        mensaje: 'eventos incorrectos'
-                        })
-                    }
+                        mensaje: 'Eventos incorrectos'
+                    })
+                }
                     const eventosQueDevuelvo = new Array<any>();
                     eventosQueDevuelvo.push(eventosDB);
                     res.status(200).send({
@@ -87,23 +86,23 @@ class eventoController{
             if(!eventoDB){
                 res.status(500).send({
                   status:'error',
-                     mensaje:'error al borrar el evento'
-                 })
+                    mensaje:'Error al borrar el evento'
+                })
              }
              res.status(200).send({
-                 status:'ok',
-                 mensaje:'se ha borrado el evento',
-                 evento: eventoDB
-             })
-         }).catch(err=>{
-             res.status(500).send({
-                 status: 'error',
-                 error: err
-             })
-         });
-     }
+                status:'ok',
+                mensaje:'Se ha borrado el evento',
+                evento: eventoDB
+            })
+        }).catch(err=>{
+            res.status(500).send({
+                status: 'error',
+                error: err
+            })
+        });
+    }
 
-     apuntarse(req: Request, res:Response){
+    apuntarse(req: Request, res:Response){
         let _id = req.body.usuario._id;
         Usuario.findById(_id).then((usuarioDB)=>{ 
             if(!usuarioDB){
@@ -112,42 +111,39 @@ class eventoController{
                     mensaje: 'Token inválido'
                 })
             }else{            
-            let usuario = usuarioDB.nombre;
-            //CODIGO AQUI
-            let params = req.body;
-            const idQueLlega = params._id;
-            Evento.findOne({_id: params._id}).then(eventDB => {
-                if (!eventDB) {
-                    return res.status(400).send({
-                        status: 'error',
-                        mensaje: 'El evento no existe',
-                    }); 
-                }
-                if(eventDB.participantes.length === 4) {
-                    return res.status(200).send({
-                        status: 'error',
-                        mensaje: 'El evento está completo',
-                    }); 
-                }else{
-                    eventDB.participantes.push(usuario);
-                }
-                eventDB.save().then( () => {
-                    res.status(200).send({
-                        status: 'ok',
-                        mensaje: 'Evento actualizado'
-                    });
-                }).catch(err => {
-                    res.status(500).send({
-                        status: 'error',
-                        mensaje: err
+                let usuario = usuarioDB.nombre;
+                //CODIGO AQUI
+                let params = req.body;
+                const idQueLlega = params._id;
+                Evento.findOne({_id: params._id}).then(eventDB => {
+                    if (!eventDB) {
+                        return res.status(400).send({
+                            status: 'error',
+                            mensaje: 'El evento no existe',
+                        }); 
+                    }
+                    if(eventDB.participantes.length === 4) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'El evento está completo',
+                        }); 
+                    }else{
+                        eventDB.participantes.push(usuario);
+                    }
+                    eventDB.save().then( () => {
+                        res.status(200).send({
+                            status: 'ok',
+                            mensaje: 'Evento actualizado'
+                        });
+                    }).catch(err => {
+                        res.status(500).send({
+                            status: 'error',
+                            mensaje: err
+                        });
                     });
                 });
-         });
-
             }
-    
-    })
-
+        })
     }
 
     desapuntarse(req: Request, res:Response){
@@ -168,7 +164,7 @@ class eventoController{
             if (!eventDB) {
                 return res.status(400).send({
                     status: 'error',
-                    mensaje: 'Error al borrarse del evento',
+                    mensaje: 'Error al borrar el evento',
                 }); 
             }
 
@@ -179,16 +175,12 @@ class eventoController{
                 res.status(200).send({
                     status: 'ok',
                     mensaje: 'Evento actualizado'
-                });
-            })
+            });
+         })
      });
-
-        }
-
-})
-
-
     }
+})
+}
 
     //Recupera el evento para editarlo
     buscarEvento(req: Request, res:Response){
@@ -199,7 +191,7 @@ class eventoController{
                  return res.status(200).send({
                     status:'error',
                     mensaje: 'Búsqueda fallida'
-                 })
+                })
              }
              const eventosQueDevuelvo = new Array<any>();
              eventosQueDevuelvo.push(eventosDB);
@@ -208,12 +200,9 @@ class eventoController{
                 mensaje: 'Búsqueda de eventos exitosa',
                 evento: eventosQueDevuelvo,
                 token: Token.generaToken(eventosQueDevuelvo)
-             });
-
-     });
-
-    }
-
+            });
+    });
+}
     //Guardar evento editado
     guardar(req: Request, res:Response){
         let params = req.body;
@@ -223,12 +212,14 @@ class eventoController{
             if (!eventDB) {
                 return res.status(400).send({
                     status: 'error',
-                    mensaje: 'Error al editar del evento',
+                    mensaje: 'Error al editar el evento',
                 }); 
             }
-            if(eventDB.nombreEvento !== params.nombreEvento || eventDB.fecha !== params.fecha) {
+            if(eventDB.nombreEvento !== params.nombreEvento || eventDB.lugar !== params.lugar || eventDB.fecha !== params.fecha || eventDB.hora !== params.hora) {
                 eventDB.nombreEvento = params.nombreEvento
+                eventDB.lugar = params.lugar
                 eventDB.fecha = params.fecha
+                eventDB.hora = params.hora
                 } 
           
             eventDB.save().then( () => {
@@ -238,10 +229,7 @@ class eventoController{
                 });
             })
      });
-    }
-    
-
+    } 
 }
-
 
 export default eventoController;
