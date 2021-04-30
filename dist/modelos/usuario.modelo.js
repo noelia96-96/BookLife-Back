@@ -12,7 +12,10 @@ const usuarioSchema = new mongoose_1.Schema({
     pwd: { type: String },
     email: { type: String, unique: true },
     ciudad: { type: String },
-    sexo: { type: String }
+    sexo: { type: String },
+    direccion: { type: String },
+    telefono: { type: Number },
+    web: { type: String }
 }, {
     timestamps: true
 });

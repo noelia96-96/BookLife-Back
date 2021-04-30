@@ -55,6 +55,37 @@ class usuarioController {
             });
         });
     }
+    registroLibreria(req, res) {
+        // Usuario
+        let params = req.body;
+        const usuarioNuevo = new usuario_modelo_1.Usuario();
+        usuarioNuevo.nombre = params.nombre;
+        usuarioNuevo.ciudad = params.ciudad;
+        usuarioNuevo.direccion = params.direccion;
+        usuarioNuevo.telefono = params.telefono;
+        usuarioNuevo.web = params.web;
+        usuarioNuevo.email = params.email;
+        usuarioNuevo.pwd = params.pwd;
+        usuarioNuevo.sexo = params.sexo;
+        usuario_modelo_1.Usuario.create(usuarioNuevo).then((usuarioDB) => {
+            if (!usuarioDB) {
+                res.status(500).send({
+                    status: 'error',
+                    mensaje: 'error al crear el usuario'
+                });
+            }
+            res.status(200).send({
+                status: 'ok',
+                mensaje: 'se ha creado el usuario' + usuarioDB.nombre,
+                usuario: usuarioDB
+            });
+        }).catch(err => {
+            res.status(500).send({
+                status: 'error',
+                error: err
+            });
+        });
+    }
     getUsuario(req, res) {
         let _id = req.body.usuario._id;
         usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
@@ -84,10 +115,7 @@ class usuarioController {
         const pwdQueLlega = params.pwd;
         //buscar los usuarios que cumplan estas dos condiciones
         //con una promesa, si lo encuentra devuelve un usuario con unos datos concretos (no todos)
-        console.log(nombreQueLlega);
-        console.log(pwdQueLlega);
         usuario_modelo_1.Usuario.findOne({ nombre: nombreQueLlega, pwd: pwdQueLlega }).then((usuarioDB) => {
-            console.log(usuarioDB);
             if (!usuarioDB) {
                 return res.status(200).send({
                     status: 'error',
@@ -97,9 +125,8 @@ class usuarioController {
             const usuarioQueDevuelvo = new usuario_modelo_1.Usuario();
             usuarioQueDevuelvo.nombre = usuarioDB.nombre;
             usuarioQueDevuelvo._id = usuarioDB._id;
-            //usuarioQueDevuelvo.email = usuarioDB.email;//
-            console.log(usuarioQueDevuelvo);
-            console.log(res);
+            usuarioQueDevuelvo.web = usuarioDB.web;
+            usuarioQueDevuelvo.sexo = usuarioDB.sexo;
             res.status(200).send({
                 status: 'ok',
                 menesaj: 'Login correcto',

@@ -8,8 +8,11 @@ const usuarioRutas = Router();
 usuarioRutas.get('/getSaludo', usuarioController.prototype.getSaludo);
 usuarioRutas.post('/postDePrueba', usuarioController.prototype.postDePrueba);
 usuarioRutas.post('/registro', usuarioController.prototype.registro);
+usuarioRutas.post('/registro-libreria', usuarioController.prototype.registroLibreria);
 usuarioRutas.post('/login', usuarioController.prototype.login);
 usuarioRutas.get('/getUsuario',autenticacion, usuarioController.prototype.getUsuario);
+
+
 
 
 export default usuarioRutas;
