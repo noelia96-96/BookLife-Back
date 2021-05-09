@@ -9,9 +9,12 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const usuarioRutas = express_1.Router();
 //usuarioController es el nombre de la clase, no del objeto
 usuarioRutas.get('/getSaludo', usuario_controlador_1.default.prototype.getSaludo);
+usuarioRutas.get('/mostrarUsuario', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.mostrarUsuario);
 usuarioRutas.post('/postDePrueba', usuario_controlador_1.default.prototype.postDePrueba);
 usuarioRutas.post('/registro', usuario_controlador_1.default.prototype.registro);
 usuarioRutas.post('/registro-libreria', usuario_controlador_1.default.prototype.registroLibreria);
+usuarioRutas.post('/guardar-datos-editados-libreria', usuario_controlador_1.default.prototype.guardarDatosEditadosLibreria);
+usuarioRutas.post('/guardar-datos-editados-bibliofilo', usuario_controlador_1.default.prototype.guardarDatosEditadosBibliofilo);
 usuarioRutas.post('/login', usuario_controlador_1.default.prototype.login);
 usuarioRutas.get('/getUsuario', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.getUsuario);
 exports.default = usuarioRutas;

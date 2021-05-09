@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const usuario_ruta_1 = __importDefault(require("./rutas/usuario.ruta"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const evento_ruta_1 = __importDefault(require("./rutas/evento.ruta"));
+const libro_ruta_1 = __importDefault(require("./rutas/libro.ruta"));
 const server = new server_1.Server();
 //MIDDLEWARES
 //1. bodyParser                                    
@@ -24,6 +25,8 @@ server.app.use(cors_1.default({
 server.app.use('/usuario', usuario_ruta_1.default);
 //Evento
 server.app.use('/evento', evento_ruta_1.default);
+//Libro
+server.app.use('/libro', libro_ruta_1.default);
 //conectamos la bbdd
 //mongoose.connect(ruta, opciones, callback para ver si hay error)
 mongoose_1.default.connect('mongodb://localhost:27017/booklife', {

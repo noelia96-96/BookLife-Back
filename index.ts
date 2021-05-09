@@ -4,6 +4,7 @@ import cors from 'cors';
 import usuarioRutas from './rutas/usuario.ruta';
 import mongoose, { Schema } from 'mongoose';
 import eventoRutas from './rutas/evento.ruta';
+import libroRutas from './rutas/libro.ruta';
 
 const server = new Server();
 
@@ -24,6 +25,8 @@ server.app.use(cors({
 server.app.use('/usuario', usuarioRutas);
 //Evento
 server.app.use('/evento', eventoRutas);
+//Libro
+server.app.use('/libro', libroRutas);
 
 //conectamos la bbdd
 //mongoose.connect(ruta, opciones, callback para ver si hay error)
