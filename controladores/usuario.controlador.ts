@@ -28,6 +28,38 @@ postDePrueba (req:Request, res:Response){
     })
     } 
 
+   //Cargar usuarios propios
+     mostrarUsuario(req: Request, res:Response){
+         console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        Usuario.findById(_id).then((usuarioDB)=>{ 
+            if(!usuarioDB){
+                return res.status(200).send({
+                    status:'error',
+                    mensaje: 'Token inválido'
+                })
+            }else{    
+                let usuario = usuarioDB.nombre;
+                Usuario.find({ nombre: usuario }).then((usuariosDB)=>{
+                    if(!usuariosDB){
+                        return res.status(200).send({
+                        status:'error',
+                        mensaje: 'Usuarios incorrectos'
+                    })
+                }                
+                    const usuarioQueDevuelvo = new Array<any>();
+                    usuarioQueDevuelvo.push(usuariosDB);
+                    res.status(200).send({
+                    status:'ok',
+                    mensaje: 'Muestra de datos correcta',
+                    usuario: usuarioQueDevuelvo,
+                    token: Token.generaToken(usuario)
+                });
+            });
+        }
+    })
+}
 registro(req:Request, res:Response){
    // Usuario
    let params = req.body;
@@ -68,8 +100,6 @@ registroLibreria(req:Request, res:Response){
     usuarioNuevo.web = params.web;
     usuarioNuevo.email = params.email;
     usuarioNuevo.pwd = params.pwd;
-   
-    usuarioNuevo.sexo = params.sexo;
     
     Usuario.create(usuarioNuevo).then((usuarioDB)=>{
         if(!usuarioDB){
@@ -148,8 +178,65 @@ login(req:Request, res:Response){
         })
     })  
  }
+//Guardar datos personales editados del librero
+ guardarDatosEditadosLibreria(req: Request, res:Response){
+      let params = req.body;
+        const idQueLlega = params._id;
 
+        Usuario.findById(idQueLlega).then(usuarioDB => {
+            if (!usuarioDB) {
+                return res.status(400).send({
+                    status: 'error',
+                    mensaje: 'Error al editar los datos personales',
+                }); 
+            }
+            if(usuarioDB.nombre !== params.nombre || usuarioDB.pwd !== params.pwd || usuarioDB.email !== params.email || usuarioDB.web !== params.web || usuarioDB.telefono !== params.telefono || usuarioDB.ciudad !== params.ciudad || usuarioDB.direccion !== params.direccion) {
+                usuarioDB.nombre = params.nombre
+                usuarioDB.pwd = params.pwd
+                usuarioDB.email = params.email
+                usuarioDB.web = params.web
+                usuarioDB.telefono = params.telefono
+                usuarioDB.ciudad = params.ciudad
+                usuarioDB.direccion = params.direccion
+                } 
+          
+            usuarioDB.save().then( () => {
+                res.status(200).send({
+                    status: 'ok',
+                    mensaje: 'Datos personales editados'
+                });
+            })
+        });
+    }; 
 
-};
+//Guardar datos personales editados del bibliofilo
+ guardarDatosEditadosBibliofilo(req: Request, res:Response){
+     let params = req.body;
+        const idQueLlega = params._id;
+
+        Usuario.findById(idQueLlega).then(usuarioDB => {
+            if (!usuarioDB) {
+                return res.status(400).send({
+                    status: 'error',
+                    mensaje: 'Error al editar los datos personales',
+                }); 
+            }
+            if(usuarioDB.nombre !== params.nombre || usuarioDB.pwd !== params.pwd || usuarioDB.ciudad !== params.ciudad || usuarioDB.sexo !== params.sexo) {
+                usuarioDB.nombre = params.nombre
+                usuarioDB.pwd = params.pwd
+                usuarioDB.email = params.email
+                usuarioDB.ciudad = params.ciudad
+                usuarioDB.sexo = params.sexo
+                } 
+          
+            usuarioDB.save().then( () => {
+                res.status(200).send({
+                    status: 'ok',
+                    mensaje: 'Datos personales editados'
+                });
+            })
+        });
+   }; 
+}
 
 export default usuarioController;

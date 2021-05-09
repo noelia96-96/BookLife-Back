@@ -52,6 +52,7 @@ class eventoController {
     }
     //Cargar eventos propios
     getEvento(req, res) {
+        console.log(req);
         let _id = req.body.usuario._id;
         let params = req.body;
         usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {

@@ -27,6 +27,39 @@ class usuarioController {
             usuario: usuario
         });
     }
+    //Cargar usuarios propios
+    mostrarUsuario(req, res) {
+        console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
+            if (!usuarioDB) {
+                return res.status(200).send({
+                    status: 'error',
+                    mensaje: 'Token inválido'
+                });
+            }
+            else {
+                let usuario = usuarioDB.nombre;
+                usuario_modelo_1.Usuario.find({ nombre: usuario }).then((usuariosDB) => {
+                    if (!usuariosDB) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'Usuarios incorrectos'
+                        });
+                    }
+                    const usuarioQueDevuelvo = new Array();
+                    usuarioQueDevuelvo.push(usuariosDB);
+                    res.status(200).send({
+                        status: 'ok',
+                        mensaje: 'Muestra de datos correcta',
+                        usuario: usuarioQueDevuelvo,
+                        token: token_1.default.generaToken(usuario)
+                    });
+                });
+            }
+        });
+    }
     registro(req, res) {
         // Usuario
         let params = req.body;
@@ -66,7 +99,6 @@ class usuarioController {
         usuarioNuevo.web = params.web;
         usuarioNuevo.email = params.email;
         usuarioNuevo.pwd = params.pwd;
-        usuarioNuevo.sexo = params.sexo;
         usuario_modelo_1.Usuario.create(usuarioNuevo).then((usuarioDB) => {
             if (!usuarioDB) {
                 res.status(500).send({
@@ -141,6 +173,61 @@ class usuarioController {
             });
         });
     }
+    //Guardar datos personales editados del librero
+    guardarDatosEditadosLibreria(req, res) {
+        let params = req.body;
+        const idQueLlega = params._id;
+        usuario_modelo_1.Usuario.findById(idQueLlega).then(usuarioDB => {
+            if (!usuarioDB) {
+                return res.status(400).send({
+                    status: 'error',
+                    mensaje: 'Error al editar los datos personales',
+                });
+            }
+            if (usuarioDB.nombre !== params.nombre || usuarioDB.pwd !== params.pwd || usuarioDB.email !== params.email || usuarioDB.web !== params.web || usuarioDB.telefono !== params.telefono || usuarioDB.ciudad !== params.ciudad || usuarioDB.direccion !== params.direccion) {
+                usuarioDB.nombre = params.nombre;
+                usuarioDB.pwd = params.pwd;
+                usuarioDB.email = params.email;
+                usuarioDB.web = params.web;
+                usuarioDB.telefono = params.telefono;
+                usuarioDB.ciudad = params.ciudad;
+                usuarioDB.direccion = params.direccion;
+            }
+            usuarioDB.save().then(() => {
+                res.status(200).send({
+                    status: 'ok',
+                    mensaje: 'Datos personales editados'
+                });
+            });
+        });
+    }
+    ;
+    //Guardar datos personales editados del bibliofilo
+    guardarDatosEditadosBibliofilo(req, res) {
+        let params = req.body;
+        const idQueLlega = params._id;
+        usuario_modelo_1.Usuario.findById(idQueLlega).then(usuarioDB => {
+            if (!usuarioDB) {
+                return res.status(400).send({
+                    status: 'error',
+                    mensaje: 'Error al editar los datos personales',
+                });
+            }
+            if (usuarioDB.nombre !== params.nombre || usuarioDB.pwd !== params.pwd || usuarioDB.ciudad !== params.ciudad || usuarioDB.sexo !== params.sexo) {
+                usuarioDB.nombre = params.nombre;
+                usuarioDB.pwd = params.pwd;
+                usuarioDB.email = params.email;
+                usuarioDB.ciudad = params.ciudad;
+                usuarioDB.sexo = params.sexo;
+            }
+            usuarioDB.save().then(() => {
+                res.status(200).send({
+                    status: 'ok',
+                    mensaje: 'Datos personales editados'
+                });
+            });
+        });
+    }
+    ;
 }
-;
 exports.default = usuarioController;
