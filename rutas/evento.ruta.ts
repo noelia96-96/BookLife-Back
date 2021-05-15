@@ -6,6 +6,7 @@ const eventoRutas = Router();
 
 eventoRutas.post('/registrar',autenticacion, eventoController.prototype.registrar);
 eventoRutas.post('/mostrarEvento',autenticacion, eventoController.prototype.getEvento);
+eventoRutas.post('/mostrarEventoABibliofilo',autenticacion, eventoController.prototype.getEventosPorBibliofilo);
 eventoRutas.post('/borrarEvento',autenticacion, eventoController.prototype.borrarEvento);
 eventoRutas.post('/apuntarse',autenticacion, eventoController.prototype.apuntarse);
 eventoRutas.post('/desapuntarse',autenticacion, eventoController.prototype.desapuntarse);

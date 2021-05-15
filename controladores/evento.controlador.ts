@@ -21,7 +21,8 @@ class eventoController{
             eventoNuevo.nombreEvento = params.nombreEvento;
             //el creador se recupera de la BBDD directamente a la hora de hacer el registro
             eventoNuevo.creador = usuario;
-            eventoNuevo.lugar = params.lugar;
+            eventoNuevo.direccion = params.direccion;
+            eventoNuevo.ciudad = params.ciudad;
             eventoNuevo.fecha = params.fecha;
             eventoNuevo.hora = params.hora;
             eventoNuevo.participantes = params.participantes;
@@ -61,8 +62,41 @@ class eventoController{
                     mensaje: 'Token inválido'
                 })
             }else{            
-                let usuario = usuarioDB.nombre;
-                Evento.find({ creador: usuario }).sort('fecha').limit(params.limite).then((eventosDB)=>{
+                 let ciudad = usuarioDB.ciudad;
+                Evento.find({  ciudad: ciudad }).sort('fecha').limit(params.limite).then((eventosParaBibliofiloDB)=>{
+                    if(!eventosParaBibliofiloDB){
+                        return res.status(200).send({
+                        status:'error',
+                        mensaje: 'Eventos incorrectos'
+                    })
+                }
+                    const eventosParaBibliofiloQueDevuelvo = new Array<any>();
+                    eventosParaBibliofiloQueDevuelvo.push(eventosParaBibliofiloDB);
+                    res.status(200).send({
+                    status:'ok',
+                    mensaje: 'Muestra de datos correcta',
+                    evento: eventosParaBibliofiloQueDevuelvo,
+                    token: Token.generaToken(usuarioDB)
+                });
+            });
+        }
+    })
+}
+
+//Cargar eventos por bibliofilo
+getEventosPorBibliofilo(req: Request, res:Response){
+     console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        Usuario.findById(_id).then((usuarioDB)=>{ 
+            if(!usuarioDB){
+                return res.status(200).send({
+                    status:'error',
+                    mensaje: 'Token inválido'
+                })
+            }else{            
+                let ciudad = usuarioDB.ciudad;
+                Evento.find({ ciudad: ciudad }).sort('fecha').limit(params.limite).then((eventosDB)=>{
                     if(!eventosDB){
                         return res.status(200).send({
                         status:'error',
@@ -216,9 +250,10 @@ class eventoController{
                     mensaje: 'Error al editar el evento',
                 }); 
             }
-            if(eventDB.nombreEvento !== params.nombreEvento || eventDB.lugar !== params.lugar || eventDB.fecha !== params.fecha || eventDB.hora !== params.hora) {
+            if(eventDB.nombreEvento !== params.nombreEvento || eventDB.direccion !== params.direccion || eventDB.ciudad !== params.ciudad || eventDB.fecha !== params.fecha || eventDB.hora !== params.hora) {
                 eventDB.nombreEvento = params.nombreEvento
-                eventDB.lugar = params.lugar
+                eventDB.direccion = params.direccion
+                eventDB.ciudad = params.ciudad
                 eventDB.fecha = params.fecha
                 eventDB.hora = params.hora
                 } 

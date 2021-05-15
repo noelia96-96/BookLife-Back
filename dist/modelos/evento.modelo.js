@@ -10,7 +10,8 @@ const mongoose_2 = __importDefault(require("mongoose"));
 const eventoSchema = new mongoose_1.Schema({
     nombreEvento: { type: String, unique: true },
     creador: { type: String },
-    lugar: { type: String },
+    direccion: { type: String },
+    ciudad: { type: String },
     fecha: { type: Date },
     hora: { type: Date },
     participantes: [{ type: String }]

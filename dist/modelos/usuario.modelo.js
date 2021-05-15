@@ -15,7 +15,8 @@ const usuarioSchema = new mongoose_1.Schema({
     sexo: { type: String },
     direccion: { type: String },
     telefono: { type: Number },
-    web: { type: String }
+    web: { type: String },
+    favoritos: [{ type: String }],
 }, {
     timestamps: true
 });

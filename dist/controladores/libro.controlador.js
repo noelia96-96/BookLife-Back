@@ -84,6 +84,50 @@ class libroController {
             }
         });
     }
+    //Mostrar libros al bibliofilo
+    mostrarLibros(req, res) {
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
+            if (!usuarioDB) {
+                return res.status(200).send({
+                    status: 'error',
+                    mensaje: 'Token inválido'
+                });
+            }
+            else {
+                let ciudad = usuarioDB.ciudad;
+                usuario_modelo_1.Usuario.find({ ciudad: ciudad }).then((usuariosDB) => {
+                    if (!usuariosDB) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'Usuarios incorrectos'
+                        });
+                    }
+                    const nombreLibreros = new Array();
+                    usuariosDB.forEach(function (value) {
+                        nombreLibreros.push(value.nombre);
+                    });
+                    libro_modelo_1.Libro.find({ creador: { $in: nombreLibreros } }).then((librosDB) => {
+                        if (!usuariosDB) {
+                            return res.status(200).send({
+                                status: 'error',
+                                mensaje: 'Libros incorrectos'
+                            });
+                        }
+                        const librosQueDevuelvo = new Array();
+                        librosQueDevuelvo.push(librosDB);
+                        res.status(200).send({
+                            status: 'ok',
+                            mensaje: 'Muestra de datos correcta',
+                            libro: librosQueDevuelvo,
+                            token: token_1.default.generaToken(librosQueDevuelvo)
+                        });
+                    });
+                });
+            }
+        });
+    }
     borrar(req, res) {
         let params = req.body;
         libro_modelo_1.Libro.findByIdAndRemove(params._id).then((libroDB) => {

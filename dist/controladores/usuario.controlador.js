@@ -60,6 +60,39 @@ class usuarioController {
             }
         });
     }
+    //Cargar usuarios tipo librero - libreria
+    mostrarLibreria(req, res) {
+        console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
+            if (!usuarioDB) {
+                return res.status(200).send({
+                    status: 'error',
+                    mensaje: 'Token inválido'
+                });
+            }
+            else {
+                let ciudad = usuarioDB.ciudad;
+                usuario_modelo_1.Usuario.find({ ciudad: ciudad }).then((usuariosLibrerosDB) => {
+                    if (!usuariosLibrerosDB) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'Usuarios tipo librero incorrectos'
+                        });
+                    }
+                    const usuarioLibreroQueDevuelvo = new Array();
+                    usuarioLibreroQueDevuelvo.push(usuariosLibrerosDB);
+                    res.status(200).send({
+                        status: 'ok',
+                        mensaje: 'Muestra de datos correcta',
+                        usuario: usuarioLibreroQueDevuelvo,
+                        token: token_1.default.generaToken(usuarioDB)
+                    });
+                });
+            }
+        });
+    }
     registro(req, res) {
         // Usuario
         let params = req.body;
@@ -69,6 +102,7 @@ class usuarioController {
         usuarioNuevo.email = params.email;
         usuarioNuevo.ciudad = params.ciudad;
         usuarioNuevo.sexo = params.sexo;
+        usuarioNuevo.favoritos = params.favoritos;
         usuario_modelo_1.Usuario.create(usuarioNuevo).then((usuarioDB) => {
             if (!usuarioDB) {
                 res.status(500).send({
@@ -99,6 +133,7 @@ class usuarioController {
         usuarioNuevo.web = params.web;
         usuarioNuevo.email = params.email;
         usuarioNuevo.pwd = params.pwd;
+        console.log(usuarioNuevo);
         usuario_modelo_1.Usuario.create(usuarioNuevo).then((usuarioDB) => {
             if (!usuarioDB) {
                 res.status(500).send({
@@ -131,6 +166,7 @@ class usuarioController {
                 const usuarioQueDevuelvo = new usuario_modelo_1.Usuario();
                 usuarioQueDevuelvo.nombre = usuarioDB.nombre;
                 usuarioQueDevuelvo._id = usuarioDB._id;
+                usuarioQueDevuelvo.ciudad = usuarioDB.ciudad;
                 res.status(200).send({
                     status: 'ok',
                     mensaje: 'Login correcto',
@@ -229,5 +265,27 @@ class usuarioController {
         });
     }
     ;
+    //Guardar la libreria en favoritos
+    guadarLibreriaFav(req, res) {
+        let params = req.body;
+        const idQueLlega = params.usuario._id;
+        const libreriaQueLlega = params.libreria;
+        console.log(params);
+        usuario_modelo_1.Usuario.findById(idQueLlega).then(usuarioDB => {
+            if (!usuarioDB) {
+                return res.status(400).send({
+                    status: 'error',
+                    mensaje: 'Error al traer el usuario',
+                });
+            }
+            usuarioDB.favoritos.push(libreriaQueLlega);
+            usuarioDB.save().then(() => {
+                res.status(200).send({
+                    status: 'ok',
+                    mensaje: 'Datos ok'
+                });
+            });
+        });
+    }
 }
 exports.default = usuarioController;

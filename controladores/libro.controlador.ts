@@ -82,6 +82,52 @@ class libroController{
         }
     })
 }
+
+//Mostrar libros al bibliofilo
+    mostrarLibros(req: Request, res:Response){
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        Usuario.findById(_id).then((usuarioDB)=>{ 
+            if(!usuarioDB){
+                return res.status(200).send({
+                    status:'error',
+                    mensaje: 'Token inválido'
+                })
+            }else{            
+                let ciudad = usuarioDB.ciudad;
+                Usuario.find({ ciudad: ciudad }).then((usuariosDB)=>{
+                    if(!usuariosDB){
+                        return res.status(200).send({
+                        status:'error',
+                        mensaje: 'Usuarios incorrectos'
+                        })
+                    }
+                    const nombreLibreros = new Array<string>();
+                    usuariosDB.forEach(function (value) {
+                        nombreLibreros.push(value.nombre) 
+                    });
+                    Libro.find({creador:{$in:nombreLibreros}}).then((librosDB)=>{
+                        
+                        if(!usuariosDB){
+                            return res.status(200).send({
+                            status:'error',
+                            mensaje: 'Libros incorrectos'
+                            })
+                        }
+                        const librosQueDevuelvo = new Array<any>();
+                        librosQueDevuelvo.push(librosDB);
+                        res.status(200).send({
+                        status:'ok',
+                        mensaje: 'Muestra de datos correcta',
+                        libro: librosQueDevuelvo,
+                        token: Token.generaToken(librosQueDevuelvo)
+                        });
+                    });
+                })
+            }
+        })
+    }
+    
     borrar(req: Request, res:Response){
         let params = req.body;
         Libro.findByIdAndRemove(params._id).then((libroDB)=>{
