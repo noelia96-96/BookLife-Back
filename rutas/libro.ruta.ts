@@ -6,6 +6,7 @@ const libroRutas = Router();
 
 libroRutas.post('/registrarLibro',autenticacion, libroController.prototype.registrarLibro);
 libroRutas.post('/mostrarLibro',autenticacion, libroController.prototype.getLibros);
+libroRutas.post('/mostrarLibrosBibliofilo',autenticacion, libroController.prototype.mostrarLibros);
 libroRutas.post('/borrarLibro',autenticacion, libroController.prototype.borrar);
 libroRutas.post('/buscarLibro',autenticacion, libroController.prototype.buscarLibro);
 libroRutas.post('/guardar',autenticacion, libroController.prototype.guardarDatosEditados);

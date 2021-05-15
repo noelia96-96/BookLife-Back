@@ -5,7 +5,8 @@ import mongoose from 'mongoose';
 const eventoSchema = new Schema({
     nombreEvento:{type:String, unique:true},
     creador:{type:String},
-    lugar:{type:String},
+    direccion :{type:String},
+    ciudad :{type:String},
     fecha:{type:Date},
     hora:{type:Date},
     participantes:[{type:String}]
@@ -16,7 +17,8 @@ const eventoSchema = new Schema({
 interface IEvento extends Document{
     nombreEvento:string,
     creador:string,
-    lugar: string,
+    direccion: string,
+    ciudad: string,
     fecha:Date,
     hora: Date,
     participantes:string[]

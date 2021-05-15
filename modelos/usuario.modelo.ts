@@ -9,7 +9,8 @@ const usuarioSchema = new Schema({
     sexo:{type:String},
     direccion:{type:String},
     telefono:{type:Number},
-    web:{type:String}
+    web:{type:String},
+    favoritos:[{type:String}],
 },{
     timestamps:true
 });
@@ -22,7 +23,8 @@ interface IUsuario extends Document{
     sexo:string
     direccion:string,
     telefono:number,
-    web:string
+    web:string,
+    favoritos:string[]
 }
 
 //modelo de mongoose - que trabaja sobre la tabla Usuario con esquema usuarioSchema
