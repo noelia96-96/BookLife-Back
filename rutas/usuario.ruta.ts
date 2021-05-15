@@ -11,13 +11,13 @@ usuarioRutas.post('/mostrarLibreria',autenticacion, usuarioController.prototype.
 usuarioRutas.post('/postDePrueba', usuarioController.prototype.postDePrueba);
 usuarioRutas.post('/registro', usuarioController.prototype.registro);
 usuarioRutas.post('/registroLibreria', usuarioController.prototype.registroLibreria);
-usuarioRutas.post('/guardar-datos-editados-libreria', usuarioController.prototype.guardarDatosEditadosLibreria);
-usuarioRutas.post('/guardar-datos-editados-bibliofilo', usuarioController.prototype.guardarDatosEditadosBibliofilo);
+usuarioRutas.post('/guardar-datos-editados-libreria', autenticacion, usuarioController.prototype.guardarDatosEditadosLibreria);
+usuarioRutas.post('/guardar-datos-editados-bibliofilo', autenticacion, usuarioController.prototype.guardarDatosEditadosBibliofilo);
 usuarioRutas.post('/login', usuarioController.prototype.login);
 usuarioRutas.post('/guadarLibreriaFav',autenticacion, usuarioController.prototype.guadarLibreriaFav);
 usuarioRutas.get('/getUsuario',autenticacion, usuarioController.prototype.getUsuario);
-
-
+usuarioRutas.post('/mostrarLibrosFavoritos',autenticacion, usuarioController.prototype.mostrarLibrosFavoritos);
+usuarioRutas.post('/borrarLibreriaFav',autenticacion, usuarioController.prototype.borrarLibreriaFav);
 
 
 export default usuarioRutas;

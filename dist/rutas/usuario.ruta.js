@@ -14,9 +14,11 @@ usuarioRutas.post('/mostrarLibreria', autenticacion_1.autenticacion, usuario_con
 usuarioRutas.post('/postDePrueba', usuario_controlador_1.default.prototype.postDePrueba);
 usuarioRutas.post('/registro', usuario_controlador_1.default.prototype.registro);
 usuarioRutas.post('/registroLibreria', usuario_controlador_1.default.prototype.registroLibreria);
-usuarioRutas.post('/guardar-datos-editados-libreria', usuario_controlador_1.default.prototype.guardarDatosEditadosLibreria);
-usuarioRutas.post('/guardar-datos-editados-bibliofilo', usuario_controlador_1.default.prototype.guardarDatosEditadosBibliofilo);
+usuarioRutas.post('/guardar-datos-editados-libreria', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.guardarDatosEditadosLibreria);
+usuarioRutas.post('/guardar-datos-editados-bibliofilo', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.guardarDatosEditadosBibliofilo);
 usuarioRutas.post('/login', usuario_controlador_1.default.prototype.login);
 usuarioRutas.post('/guadarLibreriaFav', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.guadarLibreriaFav);
 usuarioRutas.get('/getUsuario', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.getUsuario);
+usuarioRutas.post('/mostrarLibrosFavoritos', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.mostrarLibrosFavoritos);
+usuarioRutas.post('/borrarLibreriaFav', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.borrarLibreriaFav);
 exports.default = usuarioRutas;

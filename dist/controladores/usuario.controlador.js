@@ -74,7 +74,7 @@ class usuarioController {
             }
             else {
                 let ciudad = usuarioDB.ciudad;
-                usuario_modelo_1.Usuario.find({ ciudad: ciudad }).then((usuariosLibrerosDB) => {
+                usuario_modelo_1.Usuario.find({ "$and": [{ direccion: { $exists: true } }, { ciudad: ciudad }] }).then((usuariosLibrerosDB) => {
                     if (!usuariosLibrerosDB) {
                         return res.status(200).send({
                             status: 'error',
@@ -167,6 +167,7 @@ class usuarioController {
                 usuarioQueDevuelvo.nombre = usuarioDB.nombre;
                 usuarioQueDevuelvo._id = usuarioDB._id;
                 usuarioQueDevuelvo.ciudad = usuarioDB.ciudad;
+                usuarioQueDevuelvo.favoritos = usuarioDB.favoritos;
                 res.status(200).send({
                     status: 'ok',
                     mensaje: 'Login correcto',
@@ -285,6 +286,64 @@ class usuarioController {
                     mensaje: 'Datos ok'
                 });
             });
+        });
+    }
+    //Borrar la libreria de favoritos
+    borrarLibreriaFav(req, res) {
+        let params = req.body;
+        const idQueLlega = params.usuario._id;
+        const libreriaQueLlega = params.libreria;
+        console.log(params);
+        usuario_modelo_1.Usuario.findById(idQueLlega).then(usuarioDB => {
+            if (!usuarioDB) {
+                return res.status(400).send({
+                    status: 'error',
+                    mensaje: 'Error al borrar el usuario',
+                });
+            }
+            // obtenemos el indice
+            var indice = usuarioDB.favoritos.indexOf(libreriaQueLlega);
+            // 1 es la cantidad de elemento a eliminar
+            usuarioDB.favoritos.splice(indice, 1);
+            usuarioDB.save().then(() => {
+                res.status(200).send({
+                    status: 'ok',
+                    mensaje: 'Datos ok'
+                });
+            });
+        });
+    }
+    //Mostrar las librerias favoritas en la seccion - Favoritos
+    mostrarLibrosFavoritos(req, res) {
+        console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
+            if (!usuarioDB) {
+                return res.status(200).send({
+                    status: 'error',
+                    mensaje: 'Token inválido'
+                });
+            }
+            else {
+                let favoritos = usuarioDB.favoritos;
+                usuario_modelo_1.Usuario.find({ nombre: { $in: favoritos } }).then((usuariosLibrerosDB) => {
+                    if (!usuariosLibrerosDB) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'Usuarios tipo librero incorrectos'
+                        });
+                    }
+                    const usuarioLibreroQueDevuelvo = new Array();
+                    usuarioLibreroQueDevuelvo.push(usuariosLibrerosDB);
+                    res.status(200).send({
+                        status: 'ok',
+                        mensaje: 'Muestra de datos correcta',
+                        usuario: usuarioLibreroQueDevuelvo,
+                        token: token_1.default.generaToken(usuarioDB)
+                    });
+                });
+            }
         });
     }
 }
