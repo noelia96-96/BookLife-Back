@@ -13,4 +13,6 @@ libroRutas.post('/mostrarLibrosBibliofilo', autenticacion_1.autenticacion, libro
 libroRutas.post('/borrarLibro', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.borrar);
 libroRutas.post('/buscarLibro', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.buscarLibro);
 libroRutas.post('/guardar', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.guardarDatosEditados);
+libroRutas.post('/reservarLibro', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.reservarLibro);
+libroRutas.post('/quitarReservaLibro', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.quitarReservaLibro);
 exports.default = libroRutas;

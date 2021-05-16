@@ -278,6 +278,84 @@ class libroController{
             })
      });
     }
+
+    reservarLibro(req: Request, res:Response){
+        let _id = req.body.usuario._id;
+        Usuario.findById(_id).then((usuarioDB)=>{ 
+            if(!usuarioDB){
+                return res.status(200).send({
+                    status:'error',
+                    mensaje: 'Token inválido'
+                })
+            }else{            
+                let usuario = usuarioDB.nombre;
+                let params = req.body;
+                const nombreLibroQueLlega = params.nombreLibro;
+                Libro.findOne({nombreLibro: params.nombreLibro}).then(libroDB => {
+                    if (!libroDB) {
+                        return res.status(400).send({
+                            status: 'error',
+                            mensaje: 'El libro no existe',
+                        }); 
+                    }
+                    if(libroDB.participantes.length === 1) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'El libro ya ha sido reservado',
+                        }); 
+                    }else{
+                        libroDB.participantes.push(usuario);
+                    }
+                    libroDB.save().then( () => {
+                        res.status(200).send({
+                            status: 'ok',
+                            mensaje: 'Reserav de libro actualizada'
+                        });
+                    }).catch(err => {
+                        res.status(500).send({
+                            status: 'error',
+                            mensaje: err
+                        });
+                    });
+                });
+            }
+        })
+
+    }
+
+    quitarReservaLibro(req: Request, res:Response){
+        let _id = req.body.usuario._id;
+        Usuario.findById(_id).then((usuarioDB)=>{ 
+        if(!usuarioDB){
+            return res.status(200).send({
+                status:'error',
+                mensaje: 'Token inválido'
+            })
+        }else{            
+            let usuario = usuarioDB.nombre;
+            let params = req.body;
+            const nombreLibroQueLlega = params.nombreLibro;
+        Libro.findOne({nombreLibro: params.nombreLibro}).then(libroDB => {
+            if (!libroDB) {
+                return res.status(400).send({
+                    status: 'error',
+                    mensaje: 'Error al cancelar reserva del libro',
+                }); 
+            }
+
+            var indice = libroDB.participantes.indexOf(usuario);
+            libroDB.participantes.splice(indice,1);
+
+            libroDB.save().then( () => {
+                        res.status(200).send({
+                            status: 'ok',
+                            mensaje: 'Libro actualizado'
+                        });
+                    })
+                });
+            }
+        })
+    }
 }
 
 

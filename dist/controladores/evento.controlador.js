@@ -149,7 +149,6 @@ class eventoController {
             }
             else {
                 let usuario = usuarioDB.nombre;
-                //CODIGO AQUI
                 let params = req.body;
                 const idQueLlega = params._id;
                 evento_modelo_1.Evento.findOne({ _id: params._id }).then(eventDB => {
@@ -194,7 +193,6 @@ class eventoController {
             }
             else {
                 let usuario = usuarioDB.nombre;
-                //CODIGO AQUI
                 let params = req.body;
                 const idQueLlega = params._id;
                 evento_modelo_1.Evento.findOne({ _id: params._id }).then(eventDB => {
