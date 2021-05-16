@@ -147,7 +147,6 @@ getEventosPorBibliofilo(req: Request, res:Response){
                 })
             }else{            
                 let usuario = usuarioDB.nombre;
-                //CODIGO AQUI
                 let params = req.body;
                 const idQueLlega = params._id;
                 Evento.findOne({_id: params._id}).then(eventDB => {
@@ -182,7 +181,6 @@ getEventosPorBibliofilo(req: Request, res:Response){
     }
 
     desapuntarse(req: Request, res:Response){
-
         let _id = req.body.usuario._id;
         Usuario.findById(_id).then((usuarioDB)=>{ 
         if(!usuarioDB){
@@ -192,9 +190,8 @@ getEventosPorBibliofilo(req: Request, res:Response){
             })
         }else{            
             let usuario = usuarioDB.nombre;
-	    //CODIGO AQUI
-        let params = req.body;
-        const idQueLlega = params._id;
+            let params = req.body;
+            const idQueLlega = params._id;
         Evento.findOne({_id: params._id}).then(eventDB => {
             if (!eventDB) {
                 return res.status(400).send({
@@ -210,9 +207,9 @@ getEventosPorBibliofilo(req: Request, res:Response){
                 res.status(200).send({
                     status: 'ok',
                     mensaje: 'Evento actualizado'
-            });
-         })
-     });
+                });
+            })
+        });
     }
 })
 }
