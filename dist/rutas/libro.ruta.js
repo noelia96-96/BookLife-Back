@@ -15,4 +15,5 @@ libroRutas.post('/buscarLibro', autenticacion_1.autenticacion, libro_controlador
 libroRutas.post('/guardar', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.guardarDatosEditados);
 libroRutas.post('/reservarLibro', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.reservarLibro);
 libroRutas.post('/quitarReservaLibro', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.quitarReservaLibro);
+libroRutas.post('/mostrarLibrosPicharCard', autenticacion_1.autenticacion, libro_controlador_1.default.prototype.mostrarLibrosPicharCard);
 exports.default = libroRutas;

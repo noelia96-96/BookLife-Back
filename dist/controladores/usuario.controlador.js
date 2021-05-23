@@ -314,7 +314,7 @@ class usuarioController {
         });
     }
     //Mostrar las librerias favoritas en la seccion - Favoritos
-    mostrarLibrosFavoritos(req, res) {
+    mostrarLibreriasFavoritas(req, res) {
         console.log(req);
         let _id = req.body.usuario._id;
         let params = req.body;

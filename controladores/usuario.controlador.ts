@@ -329,7 +329,7 @@ login(req:Request, res:Response){
    }
 
    //Mostrar las librerias favoritas en la seccion - Favoritos
-   mostrarLibrosFavoritos(req: Request, res:Response){
+   mostrarLibreriasFavoritas(req: Request, res:Response){
     console.log(req);
     let _id = req.body.usuario._id;
     let params = req.body;
@@ -362,6 +362,9 @@ login(req:Request, res:Response){
     })
 
    }
+
 }
+
+
 
 export default usuarioController;
