@@ -16,8 +16,9 @@ usuarioRutas.post('/guardar-datos-editados-bibliofilo', autenticacion, usuarioCo
 usuarioRutas.post('/login', usuarioController.prototype.login);
 usuarioRutas.post('/guadarLibreriaFav',autenticacion, usuarioController.prototype.guadarLibreriaFav);
 usuarioRutas.get('/getUsuario',autenticacion, usuarioController.prototype.getUsuario);
-usuarioRutas.post('/mostrarLibrosFavoritos',autenticacion, usuarioController.prototype.mostrarLibrosFavoritos);
+usuarioRutas.post('/mostrarLibreriasFavoritas',autenticacion, usuarioController.prototype.mostrarLibreriasFavoritas);
 usuarioRutas.post('/borrarLibreriaFav',autenticacion, usuarioController.prototype.borrarLibreriaFav);
+
 
 
 export default usuarioRutas;

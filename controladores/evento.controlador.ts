@@ -262,7 +262,43 @@ getEventosPorBibliofilo(req: Request, res:Response){
                 });
             })
      });
-    } 
+    }
+
+    mostrarEventosPicharCard(req: Request, res:Response){
+        console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        let libreriaPinchada = params.libreriaPinchadaCard;
+    
+        Usuario.findById(_id).then((usuarioDB)=>{ 
+                if(!usuarioDB){
+                    return res.status(200).send({
+                        status:'error',
+                        mensaje: 'Token inválido'
+                    })
+                }else{
+                    Evento.find({creador:libreriaPinchada}).then((eventosDB)=>{
+                        if(!eventosDB){
+                            return res.status(200).send({
+                            status:'error',
+                            mensaje: 'Muestra incorrecta de los eventos'
+                        })
+                    }                
+                        const eventosQueDevuelvo = new Array<any>();
+                        eventosQueDevuelvo.push(eventosDB);
+                        res.status(200).send({
+                        status:'ok',
+                        mensaje: 'Muestra de datos correcta',
+                        evento: eventosQueDevuelvo,
+                        token: Token.generaToken(usuarioDB)
+                    });
+                });
+            }
+        })
+
+    }
+
+    
 }
 
 export default eventoController;

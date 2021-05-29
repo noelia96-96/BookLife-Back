@@ -10,7 +10,7 @@ const mongoose_2 = __importDefault(require("mongoose"));
 const usuarioSchema = new mongoose_1.Schema({
     nombre: { type: String, unique: true },
     pwd: { type: String },
-    email: { type: String, unique: true },
+    email: { type: String },
     ciudad: { type: String },
     sexo: { type: String },
     direccion: { type: String },

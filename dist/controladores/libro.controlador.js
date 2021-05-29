@@ -349,5 +349,37 @@ class libroController {
             }
         });
     }
+    mostrarLibrosPicharCard(req, res) {
+        console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        let libreriaPinchada = params.libreriaPinchadaCard;
+        usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
+            if (!usuarioDB) {
+                return res.status(200).send({
+                    status: 'error',
+                    mensaje: 'Token inválido'
+                });
+            }
+            else {
+                libro_modelo_1.Libro.find({ creador: libreriaPinchada }).then((librosDB) => {
+                    if (!librosDB) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'Muestra incorrecta de los libros'
+                        });
+                    }
+                    const librosQueDevuelvo = new Array();
+                    librosQueDevuelvo.push(librosDB);
+                    res.status(200).send({
+                        status: 'ok',
+                        mensaje: 'Muestra de datos correcta',
+                        libro: librosQueDevuelvo,
+                        token: token_1.default.generaToken(usuarioDB)
+                    });
+                });
+            }
+        });
+    }
 }
 exports.default = libroController;

@@ -261,5 +261,37 @@ class eventoController {
             });
         });
     }
+    mostrarEventosPicharCard(req, res) {
+        console.log(req);
+        let _id = req.body.usuario._id;
+        let params = req.body;
+        let libreriaPinchada = params.libreriaPinchadaCard;
+        usuario_modelo_1.Usuario.findById(_id).then((usuarioDB) => {
+            if (!usuarioDB) {
+                return res.status(200).send({
+                    status: 'error',
+                    mensaje: 'Token inválido'
+                });
+            }
+            else {
+                evento_modelo_1.Evento.find({ creador: libreriaPinchada }).then((eventosDB) => {
+                    if (!eventosDB) {
+                        return res.status(200).send({
+                            status: 'error',
+                            mensaje: 'Muestra incorrecta de los eventos'
+                        });
+                    }
+                    const eventosQueDevuelvo = new Array();
+                    eventosQueDevuelvo.push(eventosDB);
+                    res.status(200).send({
+                        status: 'ok',
+                        mensaje: 'Muestra de datos correcta',
+                        evento: eventosQueDevuelvo,
+                        token: token_1.default.generaToken(usuarioDB)
+                    });
+                });
+            }
+        });
+    }
 }
 exports.default = eventoController;

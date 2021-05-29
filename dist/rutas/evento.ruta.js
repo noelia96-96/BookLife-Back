@@ -15,4 +15,5 @@ eventoRutas.post('/apuntarse', autenticacion_1.autenticacion, evento_controlador
 eventoRutas.post('/desapuntarse', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.desapuntarse);
 eventoRutas.post('/buscarEvento', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.buscarEvento);
 eventoRutas.post('/guardar', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.guardar);
+eventoRutas.post('/mostrarEventosPicharCard', autenticacion_1.autenticacion, evento_controlador_1.default.prototype.mostrarEventosPicharCard);
 exports.default = eventoRutas;

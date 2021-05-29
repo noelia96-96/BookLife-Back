@@ -19,6 +19,6 @@ usuarioRutas.post('/guardar-datos-editados-bibliofilo', autenticacion_1.autentic
 usuarioRutas.post('/login', usuario_controlador_1.default.prototype.login);
 usuarioRutas.post('/guadarLibreriaFav', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.guadarLibreriaFav);
 usuarioRutas.get('/getUsuario', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.getUsuario);
-usuarioRutas.post('/mostrarLibrosFavoritos', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.mostrarLibrosFavoritos);
+usuarioRutas.post('/mostrarLibreriasFavoritas', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.mostrarLibreriasFavoritas);
 usuarioRutas.post('/borrarLibreriaFav', autenticacion_1.autenticacion, usuario_controlador_1.default.prototype.borrarLibreriaFav);
 exports.default = usuarioRutas;

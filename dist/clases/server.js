@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 //Crear clase server con dos atributos, que sera llamada desde el index.ts
 class Server {
     constructor() {
-        this.port = 3300;
+        this.port = process.env.PORT || 8080;
         this.app = express_1.default();
     }
     //Metodo para iniciarlo
