@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 export default class Token{
 
-    private static data:any = dotenv.config();
-    public static secreto:string = Token.data.parsed.SECRETO;
+    public static secreto:any = process.env.SECRETO;
     public static caducidad:string = '365d';//'365d'
     constructor(){}
 
