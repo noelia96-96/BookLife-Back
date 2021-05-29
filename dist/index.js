@@ -27,24 +27,27 @@ server.app.use('/usuario', usuario_ruta_1.default);
 server.app.use('/evento', evento_ruta_1.default);
 //Libro
 server.app.use('/libro', libro_ruta_1.default);
+//Variables de entornos
+let dbhost = process.env["DB_HOST"];
+let dbuser = process.env["DB_USER"];
+let dbpassword = process.env["DB_PASSWORD"];
 //conectamos la bbdd
-//mongoose.connect(ruta, opciones, callback para ver si hay error)
-mongoose_1.default.connect('mongodb://localhost:27017/booklife', {
+mongoose_1.default.connect("mongodb+srv://" +
+    dbuser +
+    ":" +
+    dbpassword +
+    "@" +
+    dbhost +
+    "/myFirstDatabase?retryWrites=true&w=majority", {
     useCreateIndex: true,
     useUnifiedTopology: true,
-    useNewUrlParser: true
 }, (err) => {
     if (err) {
         console.log("error", err);
         throw err;
     }
     else {
-        console.log('Conectado a la base de datos');
-        //crear esquema. Campos entre llaves
-        //const miEsquema = new Schema({nombre:String});
-        //crear modelo con el que se accede a la bbdd 
-        //const miModelo = mongoose.model('nombreModelo', miEsquema);
-        //miModelo.create({nombre:'pepe'});
+        console.log("Conectado a la base de datos");
     }
 });
 server.start(() => {

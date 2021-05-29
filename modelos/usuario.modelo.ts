@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const usuarioSchema = new Schema({
     nombre:{type:String, unique:true},
     pwd:{type:String},
-    email:{type:String, unique:true},
+    email:{type:String},
     ciudad:{type:String},
     sexo:{type:String},
     direccion:{type:String},
