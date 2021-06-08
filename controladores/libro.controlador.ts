@@ -27,6 +27,21 @@ class libroController{
             libroNuevo.precio = params.precio;
             libroNuevo.participantes = params.participantes;
 
+            //Guardar imagen
+            if(params.base64){
+                var nombreImagen = 'imagen_libro' + Date.now();
+                let base64 = params.base64;
+                var splitted = base64.split(",", 1); 
+                var base64Data = base64.replace(splitted, "");
+                //Aqui es donde se va a guardar la imagen
+                require("fs").writeFile("./img/"+nombreImagen+".png", base64Data, 'base64', function(err:any) {
+                });
+                //Ruta de la imagen
+                var rutaImagen = 'https://proyecto-booklife.herokuapp.com/public/' + nombreImagen + '.png';
+                
+                //Guardar la url de la imagen antes de guardar el evento
+                libroNuevo.imagenLibro = rutaImagen;
+            }
             console.log(params)
             Libro.create(libroNuevo).then((libroDB)=>{
                 if(!libroDB){

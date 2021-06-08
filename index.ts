@@ -28,6 +28,8 @@ server.app.use('/evento', eventoRutas);
 //Libro
 server.app.use('/libro', libroRutas);
 
+require('dotenv').config();
+
 //Variables de entornos
 let dbhost = process.env["DB_HOST"];
 let dbuser = process.env["DB_USER"];

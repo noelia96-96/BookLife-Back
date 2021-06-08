@@ -26,7 +26,22 @@ class eventoController{
             eventoNuevo.fecha = params.fecha;
             eventoNuevo.hora = params.hora;
             eventoNuevo.participantes = params.participantes;
-
+            
+            if(params.base64){
+                //Guardar imagen
+                var nombreImagen = 'imagen_evento' + Date.now();
+                let base64 = params.base64;
+                var splitted = base64.split(",", 1); 
+                var base64Data = base64.replace(splitted, "");
+                //Aqui es donde se va a guardar la imagen
+                require("fs").writeFile("./img/"+nombreImagen+".png", base64Data, 'base64', function(err:any) {
+                });
+                //Ruta de la imagen
+                var rutaImagen = 'https://proyecto-booklife.herokuapp.com/public/' + nombreImagen + '.png';
+                
+                //Guardar la url de la imagen antes de guardar el evento
+                eventoNuevo.imagenEvento = rutaImagen;
+            }
             Evento.create(eventoNuevo).then((eventoDB)=>{
                 if(!eventoDB){
                     res.status(500).send({

@@ -8,7 +8,8 @@ const libroSchema = new Schema({
     genero:{type:String},
     autor:{type:String},
     precio:{type:String},
-    participantes:[{type:String}]
+    participantes:[{type:String}],
+    imagenLibro: {type:String}
 },{
     timestamps:true
 });
@@ -19,7 +20,8 @@ interface ILibro extends Document{
     genero: string,
     autor: string,
     precio: string,
-    participantes:string[]
+    participantes:string[],
+    imagenLibro: string
 }
 
 //modelo de mongoose - que trabaja sobre la tabla Usuario con esquema usuarioSchema

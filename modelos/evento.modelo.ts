@@ -9,7 +9,8 @@ const eventoSchema = new Schema({
     ciudad :{type:String},
     fecha:{type:Date},
     hora:{type:Date},
-    participantes:[{type:String}]
+    participantes:[{type:String}],
+    imagenEvento: {type:String}
 },{
     timestamps:true
 });
@@ -21,7 +22,8 @@ interface IEvento extends Document{
     ciudad: string,
     fecha:Date,
     hora: Date,
-    participantes:string[]
+    participantes:string[],
+    imagenEvento: string
 }
 
 //modelo de mongoose - que trabaja sobre la tabla Usuario con esquema usuarioSchema

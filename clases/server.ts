@@ -4,9 +4,10 @@ import express from 'express';
 export class Server{
 
     public app:express.Application;
-    public port:any =  process.env.PORT || 8080;
+    public port:any =  process.env.PORT || 3300;
     constructor(){
         this.app = express();
+        this.app.use('/public',express.static(`./img/`));
     }
 
 //Metodo para iniciarlo

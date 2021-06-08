@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+require('dotenv').config();
 export default class Token{
 
     public static secreto:any = process.env.SECRETO;
@@ -24,4 +25,5 @@ export default class Token{
             })   
         }); 
     }
+    
 }
