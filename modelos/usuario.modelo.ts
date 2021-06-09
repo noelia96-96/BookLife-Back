@@ -3,18 +3,28 @@ import mongoose from 'mongoose';
 //esquema - estructura de la tabla
 const usuarioSchema = new Schema({
     nombre:{type:String, unique:true},
-    email:{type:String, unique:true},
     pwd:{type:String},
-    edad:{type:Number}
+    email:{type:String},
+    ciudad:{type:String},
+    sexo:{type:String},
+    direccion:{type:String},
+    telefono:{type:Number},
+    web:{type:String},
+    favoritos:[{type:String}],
 },{
     timestamps:true
 });
 
 interface IUsuario extends Document{
     nombre:string,
-    email:string,
     pwd:string,
-    edad:number
+    email:string,
+    ciudad:string,
+    sexo:string
+    direccion:string,
+    telefono:number,
+    web:string,
+    favoritos:string[]
 }
 
 //modelo de mongoose - que trabaja sobre la tabla Usuario con esquema usuarioSchema

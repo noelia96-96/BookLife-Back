@@ -4,6 +4,7 @@ import cors from 'cors';
 import usuarioRutas from './rutas/usuario.ruta';
 import mongoose, { Schema } from 'mongoose';
 import eventoRutas from './rutas/evento.ruta';
+import libroRutas from './rutas/libro.ruta';
 
 const server = new Server();
 
@@ -24,28 +25,38 @@ server.app.use(cors({
 server.app.use('/usuario', usuarioRutas);
 //Evento
 server.app.use('/evento', eventoRutas);
+//Libro
+server.app.use('/libro', libroRutas);
+
+require('dotenv').config();
+
+//Variables de entornos
+let dbhost = process.env["DB_HOST"];
+let dbuser = process.env["DB_USER"];
+let dbpassword = process.env["DB_PASSWORD"];
 
 //conectamos la bbdd
-//mongoose.connect(ruta, opciones, callback para ver si hay error)
-mongoose.connect('mongodb://localhost:27017/hlc2021',
-                    {
-                        useCreateIndex:true,
-                        useUnifiedTopology: true, 
-                        useNewUrlParser:true
-                    },(err)=>{
-                        if(err){
-                            console.log("error", err);
-                            throw err;
-                        }
-                        else{
-                            console.log('Conectado a la base de datos');
-                            //crear esquema. Campos entre llaves
-                            //const miEsquema = new Schema({nombre:String});
-                            //crear modelo con el que se accede a la bbdd 
-                            //const miModelo = mongoose.model('nombreModelo', miEsquema);
-                            //miModelo.create({nombre:'pepe'});
-                        }
-});
+mongoose.connect(
+    "mongodb+srv://" +
+      dbuser +
+      ":" +
+      dbpassword +
+      "@" +
+      dbhost +
+      "/myFirstDatabase?retryWrites=true&w=majority",
+    {
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+    },
+    (err) => {
+      if (err) {
+        console.log("error", err);
+        throw err;
+      } else {
+        console.log("Conectado a la base de datos");
+      }
+    }
+  );
 
 server.start(()=>{
     console.log('Servidor iniciado en el puerto' + server.port);

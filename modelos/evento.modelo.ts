@@ -1,13 +1,16 @@
 import { Schema, Document } from "mongoose";
 import mongoose from 'mongoose';
 
-
 //esquema - estructura de la tabla
 const eventoSchema = new Schema({
     nombreEvento:{type:String, unique:true},
     creador:{type:String},
+    direccion :{type:String},
+    ciudad :{type:String},
     fecha:{type:Date},
-    participantes:[{type:String}]
+    hora:{type:Date},
+    participantes:[{type:String}],
+    imagenEvento: {type:String}
 },{
     timestamps:true
 });
@@ -15,8 +18,12 @@ const eventoSchema = new Schema({
 interface IEvento extends Document{
     nombreEvento:string,
     creador:string,
+    direccion: string,
+    ciudad: string,
     fecha:Date,
-    participantes:string[]
+    hora: Date,
+    participantes:string[],
+    imagenEvento: string
 }
 
 //modelo de mongoose - que trabaja sobre la tabla Usuario con esquema usuarioSchema
